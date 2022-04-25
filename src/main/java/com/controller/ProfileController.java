@@ -28,6 +28,8 @@ public class ProfileController {
 
 	String editAdminPage = "editAdmin";
 	String editUserPage = "editUser";
+	String username = "username";
+	String aadharNumber = "aadharNumber";
 
 	@GetMapping("/admin")
 	public ModelAndView viewAdminProfile() {
@@ -59,8 +61,8 @@ public class ProfileController {
 	@GetMapping("/user/edit")
 	public ModelAndView updateUser() {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("username", userService.getUserModel().getUsername());
-		modelAndView.addObject("aadharNumber", userService.getUserModel().getAadharNumber());
+		modelAndView.addObject(username, userService.getUserModel().getUsername());
+		modelAndView.addObject(aadharNumber, userService.getUserModel().getAadharNumber());
 		modelAndView.addObject("age", userService.getUserModel().getAge());
 		modelAndView.setViewName(editUserPage);
 		return modelAndView;
@@ -104,16 +106,16 @@ public class ProfileController {
 
 			userService.saveUser(existingUserModel);
 
-			modelAndView.addObject("aadharNumber", existingUserModel.getAadharNumber());
-			modelAndView.addObject("username", existingUserModel.getUsername());
+			modelAndView.addObject(aadharNumber, existingUserModel.getAadharNumber());
+			modelAndView.addObject(username, existingUserModel.getUsername());
 			modelAndView.addObject("age", existingUserModel.getAge());
 
 			modelAndView.addObject("successmessage", "Details Updated Successfully");
 			modelAndView.setViewName(editUserPage);
 		} else {
 			modelAndView.addObject("errormessage", "Please enter valid credentials");
-			modelAndView.addObject("aadharNumber", existingUserModel.getAadharNumber());
-			modelAndView.addObject("username", existingUserModel.getUsername());
+			modelAndView.addObject(aadharNumber, existingUserModel.getAadharNumber());
+			modelAndView.addObject(username, existingUserModel.getUsername());
 			modelAndView.addObject("age", existingUserModel.getAge());
 
 			modelAndView.setViewName(editUserPage);
