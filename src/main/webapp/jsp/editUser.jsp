@@ -18,18 +18,18 @@
 	<h2>Update Profile</h2>
 	<hr />
 	<br>
-	<form:form action="/user-profile/edit" method="POST" modelAttribute="userModel">
+	<form:form action="/profile/user/edit" method="POST" modelAttribute="userModel">
 		<table>
 		<caption></caption>
 			<tr>
 				<th scope="row">Enter new User Name</th>
 				<td><input type="text" name="username"
-					placeholder="Enter User Name"></td>
+					placeholder="Enter User Name" value="${username}"></td>
 				<td><form:errors path="username" cssClass="error"></form:errors>
 			</tr>
 			<tr>
 				<th scope="row">Aadhar Number</th>
-				<td><input type="text" name="aadharNumber" value="${aadharNumber}"
+				<td><input type="text" name="aadharNumber" value="${aadharNumber}" disabled
 				title="Aadhar number should be 12 characters length of integers" /></td>
 			</tr>
 			<tr>
@@ -41,7 +41,7 @@
 			<tr>
 				<th scope="row">Enter your new Age</th>
 				<td><input type="number" name="age" placeholder="Enter age" min = "1" max = "100"
-					style="width : 12em" /></td>
+					style="width : 12em" value="${age}"/></td>
 				<td><form:errors path="age" cssClass="error"></form:errors></td>
 			</tr>
 			</table>

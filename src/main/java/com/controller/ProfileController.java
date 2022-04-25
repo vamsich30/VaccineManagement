@@ -59,8 +59,9 @@ public class ProfileController {
 	@GetMapping("/user/edit")
 	public ModelAndView updateUser() {
 		ModelAndView modelAndView = new ModelAndView();
-
+		modelAndView.addObject("username", userService.getUserModel().getUsername());
 		modelAndView.addObject("aadharNumber", userService.getUserModel().getAadharNumber());
+		modelAndView.addObject("age", userService.getUserModel().getAge());
 		modelAndView.setViewName(editUserPage);
 		return modelAndView;
 	}
@@ -95,20 +96,26 @@ public class ProfileController {
 		ModelAndView modelAndView = new ModelAndView();
 		UserModel existingUserModel = userService.getUserModel();
 
-		if (result.getFieldErrorCount("username") != 0 && result.getFieldErrorCount("aadharNumber") == 0
-				&& result.getFieldErrorCount("password") != 0 && result.getFieldErrorCount("age") != 0) {
-			modelAndView.addObject("errormessage", "Please enter valid credentials");
-			modelAndView.addObject("aadharNumber", existingUserModel.getAadharNumber());
-
-			modelAndView.setViewName(editUserPage);
-		} else {
+		if (result.getFieldErrorCount("username") == 0 && result.getFieldErrorCount("password") == 0
+				&& result.getFieldErrorCount("age") == 0) {
 			existingUserModel.setUsername(model.getUsername());
 			existingUserModel.setPassword(model.getPassword());
 			existingUserModel.setAge(model.getAge());
 
 			userService.saveUser(existingUserModel);
 
+			modelAndView.addObject("aadharNumber", existingUserModel.getAadharNumber());
+			modelAndView.addObject("username", existingUserModel.getUsername());
+			modelAndView.addObject("age", existingUserModel.getAge());
+
 			modelAndView.addObject("successmessage", "Details Updated Successfully");
+			modelAndView.setViewName(editUserPage);
+		} else {
+			modelAndView.addObject("errormessage", "Please enter valid credentials");
+			modelAndView.addObject("aadharNumber", existingUserModel.getAadharNumber());
+			modelAndView.addObject("username", existingUserModel.getUsername());
+			modelAndView.addObject("age", existingUserModel.getAge());
+
 			modelAndView.setViewName(editUserPage);
 		}
 		return modelAndView;
