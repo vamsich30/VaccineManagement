@@ -13,15 +13,14 @@ public class AdminService {
 
 	@Autowired
 	AdminRepo adminRepo;
-	
+
 	private static AdminModel adminModel;
 
 	public boolean adminLoginValidation(String adminName, String password) {
 		boolean result = false;
 		if (adminRepo.existsById(adminName)) {
 			AdminEntity admin = adminRepo.findByAdminName(adminName);
-			if (admin.getAdminPassword().equals(password))
-			{
+			if (admin.getAdminPassword().equals(password)) {
 				result = true;
 				adminModel = DAOConverter.adminEntitytoDto(admin);
 			}
@@ -29,9 +28,13 @@ public class AdminService {
 
 		return result;
 	}
-	
+
 	public AdminModel getAdminModel() {
 		return adminModel;
 	}
-	
+
+	public void saveAdmin(AdminModel adminDto) {
+		adminRepo.save(DAOConverter.adminDtoToEntity(adminDto));
+	}
+
 }

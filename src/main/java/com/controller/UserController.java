@@ -54,7 +54,7 @@ public class UserController {
 
 		} else {
 			if (!service.checkAadharInDatabase(model.getAadharNumber())) {
-				service.register(model);
+				service.saveUser(model);
 				modelAndView.addObject("successmessage", "Registration Successful");
 				modelAndView.setViewName("success");
 			} else {

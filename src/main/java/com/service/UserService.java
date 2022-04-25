@@ -48,7 +48,7 @@ public class UserService {
 		return result;
 	}
 
-	public void register(UserModel model) {
+	public void saveUser(UserModel model) {
 		userRepo.save(DAOConverter.userDtoToEntity(model));
 	}
 
