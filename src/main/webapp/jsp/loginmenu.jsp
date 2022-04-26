@@ -10,13 +10,13 @@
 <body>
 	<h2>User DashBoard</h2>
 	<hr>
-	<a href="/first-dose">FirstDose</a>
+	<a href="/dose/one">FirstDose</a>
 	<br><br>
-	<a href="/second-dose">SecondDose</a>
+	<a href="/dose/two">SecondDose</a>
 	<br><br>
-	<a href="/update-profile">Update Profile</a>
+	<a href="/profile/user/edit">Update Profile</a>
 	<br><br>
-	<a href="/available-centers">Available Centers</a>
+	<a href="/centers">Available Centers</a>
 	<br><br>
 	<a href="/profile/user">UserProfile</a>
 	<br><br>
