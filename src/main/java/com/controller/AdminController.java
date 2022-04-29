@@ -4,15 +4,16 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dto.AdminModel;
+import com.dto.CovaxinDTO;
 import com.service.AdminService;
+import com.service.VaccineService;
 
 @Controller
 @RequestMapping("/admin")
@@ -20,22 +21,25 @@ public class AdminController {
 
 	@Autowired
 	AdminService adminService;
+	@Autowired
+	VaccineService vaccineService;
 
-	String adminPage = "admin";
+	String adminPage = "adminLogin";
 
-	@GetMapping("/login")
+	@GetMapping
 	public ModelAndView viewLoginPage() {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName(adminPage);
+		modelAndView.setViewName("adminLogin");
 		return modelAndView;
 	}
 
-	@PostMapping("/login")
-	public ModelAndView login(@Valid @ModelAttribute("adminDto") AdminModel adminDto, BindingResult result) {
+	@PostMapping
+	public ModelAndView login(@RequestParam("adminName") String adminName,
+			@RequestParam("adminPassword") String password) {
 		ModelAndView modelAndView = new ModelAndView();
 
-		if (!result.hasErrors()) {
-			if (adminService.adminLoginValidation(adminDto.getAdminName(), adminDto.getAdminPassword())) {
+		if (!adminName.isBlank() || !password.isBlank()) {
+			if (adminService.adminLoginValidation(adminName, password)) {
 				modelAndView.addObject("msg", "Login Successful");
 				modelAndView.setViewName(adminPage);
 			} else {
@@ -44,13 +48,37 @@ public class AdminController {
 
 			}
 		} else {
-
-			modelAndView.addObject("msg", "Please Enter valid credentials");
+			modelAndView.addObject("errmsg", "Please Enter valid credentials");
 			modelAndView.setViewName(adminPage);
-
 		}
 
 		return modelAndView;
+	}
 
+	@GetMapping("/centers")
+	public ModelAndView viewDosePage() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("covaxinMap", vaccineService.getVaccineDetails("covaxin"));
+		modelAndView.addObject("covishieldMap", vaccineService.getVaccineDetails("covishield"));
+		modelAndView.setViewName("adminCenters");
+		return modelAndView;
+	}
+
+	@GetMapping("/centers/edit/covaxin")
+	public ModelAndView viewEditCovaxinCentersPage() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("editCovaxinCenters");
+		return modelAndView;
+	}
+
+	@PostMapping("/centers/edit/covaxin")
+	public ModelAndView editCenters(@Valid @ModelAttribute("covaxinDto") CovaxinDTO covaxinDTO) {
+		ModelAndView modelAndView = new ModelAndView();
+		vaccineService.updateVaccineCenter(covaxinDTO.getLocation().toUpperCase(), covaxinDTO.getVaccineCount(),
+				"Covaxin");
+		modelAndView.addObject("msg", "Successfully Updated");
+		modelAndView.setViewName("editCovaxinCenters");
+
+		return modelAndView;
 	}
 }

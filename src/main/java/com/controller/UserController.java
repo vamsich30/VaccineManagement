@@ -1,8 +1,5 @@
 package com.controller;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +39,6 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public ModelAndView register(@Valid @ModelAttribute("userModel") UserModel model, BindingResult result)
-			throws NoSuchAlgorithmException, InvalidKeySpecException
 
 	{
 		ModelAndView modelAndView = new ModelAndView();

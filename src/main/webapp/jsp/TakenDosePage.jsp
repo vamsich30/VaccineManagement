@@ -20,7 +20,9 @@
 	<br>
 	<strong> Vaccine Booked at Location</strong>&emsp;&emsp;&emsp;&emsp;
 	<input type="text" disabled="disabled" value="${location}">
-
+	<br>
+	<br>
 	<span style="color: green; font-size: 26; font-weight: bold;">${msg}</span>
+	<span style="color: red; font-size: 26; font-weight: bold;">${errmsg}</span>
 </body>
 </html>

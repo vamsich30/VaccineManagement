@@ -18,7 +18,7 @@ import com.service.VaccineService;
 
 @RestController
 @RequestMapping("/dose")
-public class DoseController {
+public class FirstDoseController {
 
 	@Autowired
 	VaccineService vaccineService;
@@ -28,7 +28,7 @@ public class DoseController {
 	LocationService locationService;
 
 	String firstDosePage = "firstdose";
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
 	@GetMapping("/one")
 	public ModelAndView viewFirstDosePage() {
@@ -86,13 +86,59 @@ public class DoseController {
 		}
 		return modelAndView;
 	}
-	
-	String updateFirstDose = "updateFirstDose";
-	
+
+	String updateFirstDosePage = "updateFirstDose";
+
 	@GetMapping("/one/edit")
 	public ModelAndView updateFirstDose() {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName(updateFirstDose);
+		UserModel model = userService.getUserModel();
+		if (model.isDoseOne()) {
+			modelAndView.setViewName(updateFirstDosePage);
+		} else {
+			modelAndView.addObject("errmsg", "Please Schedule your dose 1 before updating");
+			modelAndView.setViewName("TakenDosePage");
+		}
+		return modelAndView;
+	}
+
+	@PostMapping("/one/edit")
+	public ModelAndView updateFirstDoseDetails(@RequestParam("vaccineName") String vaccineName,
+			@RequestParam("vaccineLocation") String vaccineLocation,
+			@RequestParam("firstDoseDate") String firstDoseDate) {
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName(updateFirstDosePage);
+		UserModel model = userService.getUserModel();
+
+		int opt = 1;
+		if (vaccineName.equalsIgnoreCase("covishield")) {
+			opt = 2;
+		}
+
+		if (locationService.checkLocation(vaccineLocation, opt)) {
+
+			if (!model.getFirstDoseVaccineLocation().equals(vaccineLocation)) {
+				vaccineService.reduceVaccineCountAfterAppointment(vaccineLocation, vaccineName);
+				vaccineService.addVaccineCountAfterUpdating(model.getFirstDoseVaccineLocation(), vaccineName);
+			}
+			model.setVaccineName(vaccineName);
+			LocalDate doseDate = LocalDate.parse(firstDoseDate, formatter);
+			model.setFirstDoseDate(doseDate);
+			model.setFirstDoseVaccineLocation(vaccineLocation);
+			locationService.updateFirstDoseDates(model);
+
+			modelAndView.addObject("updatemsg", "dose one details updated");
+			modelAndView.setViewName(updateFirstDosePage);
+
+		} else {
+			modelAndView.addObject("vaccine", vaccineName);
+			modelAndView.addObject("date", firstDoseDate);
+
+			modelAndView.addObject("errormessage", "Sorry current selected location has no doses at present");
+			modelAndView.setViewName(updateFirstDosePage);
+		}
+
 		return modelAndView;
 	}
 

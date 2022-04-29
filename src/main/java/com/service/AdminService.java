@@ -7,12 +7,21 @@ import com.converter.DAOConverter;
 import com.dto.AdminModel;
 import com.entity.AdminEntity;
 import com.repos.AdminRepo;
+import com.repos.CovaxinRepository;
+import com.repos.CoviShieldRepository;
+import com.repos.UserRepo;
 
 @Service
 public class AdminService {
 
 	@Autowired
 	AdminRepo adminRepo;
+	@Autowired
+	UserRepo userRepo;
+	@Autowired
+	CovaxinRepository covaxinRepository;
+	@Autowired
+	CoviShieldRepository coviShieldRepository;
 
 	private static AdminModel adminModel;
 
@@ -35,6 +44,14 @@ public class AdminService {
 
 	public void saveAdmin(AdminModel adminDto) {
 		adminRepo.save(DAOConverter.adminDtoToEntity(adminDto));
+	}
+
+//	public int covaxinCount() {
+//		return covaxinRepository.getCovaxinCount();
+//	}
+
+	public long usersCount() {
+		return userRepo.count();
 	}
 
 }

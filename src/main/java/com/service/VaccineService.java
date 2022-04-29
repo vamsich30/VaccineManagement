@@ -46,7 +46,7 @@ public class VaccineService {
 			covishield.save(vaccineCenter);
 		}
 	}
-	
+
 	public void addVaccineCountAfterUpdating(String vaccineLocation, String vaccineName) {
 		if (vaccineName.equalsIgnoreCase("covaxin")) {
 			CovaxinEntity vaccineCenter = covaxin.findByLocation(vaccineLocation);
@@ -56,6 +56,19 @@ public class VaccineService {
 			CoviShieldEntity vaccineCenter = covishield.findByLocation(vaccineLocation);
 			vaccineCenter.setVaccineCount(vaccineCenter.getVaccineCount() + 1);
 			covishield.save(vaccineCenter);
+		}
+	}
+
+	public void updateVaccineCenter(String vaccineLocation, int count, String vaccine) {
+		if (vaccine.equalsIgnoreCase("covaxin")) {
+			CovaxinEntity entity = covaxin.getById(vaccineLocation);
+			entity.setVaccineCount(count);
+			covaxin.save(entity);
+		} else {
+			CoviShieldEntity entity = new CoviShieldEntity();
+			entity.setLocation(vaccineLocation);
+			entity.setVaccineCount(count);
+			covishield.save(entity);
 		}
 	}
 
