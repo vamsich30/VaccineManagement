@@ -33,16 +33,19 @@ public class FirstDoseController {
 	@GetMapping("/one")
 	public ModelAndView viewFirstDosePage() {
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("Home");
 		UserModel model = userService.getUserModel();
-		if (!model.isDoseOne()) {
-			modelAndView.setViewName(firstDosePage);
+		if (model != null) {
+			if (!model.isDoseOne()) {
+				modelAndView.setViewName(firstDosePage);
 
-		} else {
-			modelAndView.addObject("name", model.getVaccineName());
-			modelAndView.addObject("date", model.getFirstDoseDate());
-			modelAndView.addObject("location", model.getFirstDoseVaccineLocation());
-			modelAndView.addObject("msg", "Dose 1 already taken");
-			modelAndView.setViewName("TakenDosePage");
+			} else {
+				modelAndView.addObject("name", model.getVaccineName());
+				modelAndView.addObject("date", model.getFirstDoseDate());
+				modelAndView.addObject("location", model.getFirstDoseVaccineLocation());
+				modelAndView.addObject("msg", "Dose 1 already taken");
+				modelAndView.setViewName("firstDoseTakenPage");
+			}
 		}
 		return modelAndView;
 	}
@@ -77,11 +80,12 @@ public class FirstDoseController {
 			modelAndView.addObject("vaccine", vaccineName);
 			modelAndView.addObject("date", firstDoseDate);
 			modelAndView.addObject("location", vaccineLocation);
+			modelAndView.addObject("msg", "Successfully Booked");
 			modelAndView.setViewName(firstDosePage);
 		} else {
 			modelAndView.addObject("vaccine", vaccineName);
 			modelAndView.addObject("date", firstDoseDate);
-			modelAndView.addObject("errormessage", "Sorry current selected location has no doses at present");
+			modelAndView.addObject("errmsg", "Sorry current selected location has no doses at present");
 			modelAndView.setViewName(firstDosePage);
 		}
 		return modelAndView;
@@ -92,12 +96,18 @@ public class FirstDoseController {
 	@GetMapping("/one/edit")
 	public ModelAndView updateFirstDose() {
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("Home");
 		UserModel model = userService.getUserModel();
-		if (model.isDoseOne()) {
-			modelAndView.setViewName(updateFirstDosePage);
-		} else {
-			modelAndView.addObject("errmsg", "Please Schedule your dose 1 before updating");
-			modelAndView.setViewName("TakenDosePage");
+		if (model != null) {
+			if (model.isDoseOne()) {
+				modelAndView.addObject("vaccine", model.getVaccineName());
+				modelAndView.addObject("date", model.getFirstDoseDate());
+				modelAndView.addObject("location", model.getFirstDoseVaccineLocation());
+				modelAndView.setViewName(updateFirstDosePage);
+			} else {
+				modelAndView.addObject("errmsg", "Please Schedule your dose 1 before updating");
+				modelAndView.setViewName("firstDoseTakenPage");
+			}
 		}
 		return modelAndView;
 	}
@@ -135,7 +145,7 @@ public class FirstDoseController {
 			modelAndView.addObject("vaccine", vaccineName);
 			modelAndView.addObject("date", firstDoseDate);
 
-			modelAndView.addObject("errormessage", "Sorry current selected location has no doses at present");
+			modelAndView.addObject("errmsg", "Sorry current selected location has no doses at present");
 			modelAndView.setViewName(updateFirstDosePage);
 		}
 

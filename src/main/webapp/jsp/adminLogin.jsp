@@ -15,7 +15,7 @@
 	font-size: 12px;
 }
 </style>
-<link rel="stylesheet" type="text/css" href="css/adminstyles.css" />
+<link rel="stylesheet" type="text/css" href="/css/adminstyles.css" />
 </head>
 <body>
 	<form action="/admin" method="post">

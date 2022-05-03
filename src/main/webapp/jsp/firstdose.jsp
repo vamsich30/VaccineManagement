@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title></title>
+<title>first dose page</title>
 <link rel="stylesheet" type="text/css" href="/css/dosestyles.css" />
 <link href="https://fonts.googleapis.com/css?family=Poppins:600"
 	rel="stylesheet" />
@@ -21,7 +21,6 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
-
 </head>
 <body>
 	<form action="/dose/one" method="POST">
@@ -29,8 +28,8 @@
 		<!--[if !IE]><!-->
 		<strong style="font-size: 16px; font-family: monospace;">Choose
 			your Vaccine</strong> <label for="favcity"> <!--<![endif]--> <select
-			name="vaccineName">
-				<option value="">${vaccine}</option>
+			name="vaccineName" required>
+				<option value="${vaccine}">${vaccine}</option>
 				<option value="Covaxin">Covaxin</option>
 				<option value="Covishield">CoviShield</option>
 		</select>
@@ -66,19 +65,23 @@
 		</label>
 		<button>Book Appointment</button>
 	</form>
+	<strong><span
+		style="color: red; font-size: 16; font-weight: bold;">${errmsg}</span></strong>
+	<strong><span
+		style="color: red; font-size: 16; font-weight: bold;">${msg}</span></strong>
 	<script type="text/javascript">
-            $(document).ready(function () {
-                $(".datepicker").datepicker({
-                    format: "dd-mm-yyyy",
-                    autoclose: true,
-                    startDate: "0d",
-                });
+		$(document).ready(function() {
+			$(".datepicker").datepicker({
+				format : "dd-mm-yyyy",
+				autoclose : true,
+				startDate : "0d",
+			});
 
-                $(".cell").click(function () {
-                    $(".cell").removeClass("select");
-                    $(this).addClass("select");
-                });
-            });
-        </script>
+			$(".cell").click(function() {
+				$(".cell").removeClass("select");
+				$(this).addClass("select");
+			});
+		});
+	</script>
 </body>
 </html>

@@ -37,22 +37,25 @@ public class SecondDoseController {
 	@GetMapping("/two")
 	public ModelAndView viewSecondDosePage() {
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("Home");
 		UserModel model = userService.getUserModel();
-		if (model.isDoseOne() && model.isDoseTwo()) {
+		if (model != null) {
+			if (model.isDoseOne() && model.isDoseTwo()) {
 
-			modelAndView.addObject("name", model.getVaccineName());
-			modelAndView.addObject("date", model.getSecondDoseDate());
-			modelAndView.addObject("location", model.getSecondDoseVaccineLocation());
+				modelAndView.addObject("name", model.getVaccineName());
+				modelAndView.addObject("date", model.getSecondDoseDate());
+				modelAndView.addObject("location", model.getSecondDoseVaccineLocation());
 
-			modelAndView.addObject("msg", "dose 2 already taken");
-			modelAndView.setViewName("TakenDosePage");
+				modelAndView.addObject("msg", "dose 2 already taken");
+				modelAndView.setViewName("TakenDosePage");
 
-		} else if (model.isDoseOne() && !model.isDoseTwo()) {
-			modelAndView.addObject("vaccineName", model.getVaccineName());
-			modelAndView.setViewName(secondDose);
-		} else {
-			modelAndView.addObject("errmsg", "Please be vaccinated for dose 1");
-			modelAndView.setViewName(takenDosePage);
+			} else if (model.isDoseOne() && !model.isDoseTwo()) {
+				modelAndView.addObject("vaccineName", model.getVaccineName());
+				modelAndView.setViewName(secondDose);
+			} else {
+				modelAndView.addObject("errmsg", "Please be vaccinated for dose 1");
+				modelAndView.setViewName(takenDosePage);
+			}
 		}
 		return modelAndView;
 	}
@@ -60,6 +63,7 @@ public class SecondDoseController {
 	@GetMapping("/two/edit")
 	public ModelAndView updateSecondDose() {
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("Home");
 		UserModel model = userService.getUserModel();
 		if (model != null) {
 			if (!model.isDoseOne()) {
@@ -71,8 +75,6 @@ public class SecondDoseController {
 				modelAndView.addObject("location", model.getSecondDoseVaccineLocation());
 				modelAndView.setViewName(updateSecondDose);
 			}
-		} else {
-			modelAndView.setViewName("login");
 		}
 		return modelAndView;
 	}

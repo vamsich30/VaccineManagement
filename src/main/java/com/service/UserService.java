@@ -16,7 +16,7 @@ public class UserService {
 	@Autowired
 	UserRepo userRepo;
 
-	static UserModel userDTO;
+	private static UserModel userDTO;
 
 	public boolean userNameValidation(String userName) {
 		return (!userName.matches("[a-zA-Z]+"));
@@ -78,6 +78,10 @@ public class UserService {
 
 	public UserModel getUserModel() {
 		return userDTO;
+	}
+
+	public void Reset() {
+		userDTO = null;
 	}
 
 }

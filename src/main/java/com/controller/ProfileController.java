@@ -34,7 +34,8 @@ public class ProfileController {
 	@GetMapping("/admin")
 	public ModelAndView viewAdminProfile() {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("model", adminService.getAdminModel());
+		modelAndView.addObject("adminName", adminService.getAdminModel().getAdminName());
+		modelAndView.addObject("adminPassword", adminService.getAdminModel().getAdminPassword());
 		modelAndView.setViewName("adminProfile");
 		return modelAndView;
 	}
@@ -42,29 +43,37 @@ public class ProfileController {
 	@GetMapping("/user")
 	public ModelAndView displayUserProfile() {
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("Home");
 		UserModel model = userService.getUserModel();
-		modelAndView.addObject("model", model);
+		if (model != null) {
+			modelAndView.addObject("model", model);
 
-		modelAndView.setViewName("userProfile");
+			modelAndView.setViewName("userProfile");
+		}
 		return modelAndView;
 	}
 
 	@GetMapping("/admin/edit")
 	public ModelAndView updateAdmin() {
 		ModelAndView modelAndView = new ModelAndView();
-
-		modelAndView.addObject("adminName", adminService.getAdminModel().getAdminName());
-		modelAndView.setViewName(editAdminPage);
+		modelAndView.setViewName("adminLogin");
+		if (adminService.getAdminModel() != null) {
+			modelAndView.addObject("adminName", adminService.getAdminModel().getAdminName());
+			modelAndView.setViewName(editAdminPage);
+		}
 		return modelAndView;
 	}
 
 	@GetMapping("/user/edit")
 	public ModelAndView updateUser() {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject(username, userService.getUserModel().getUsername());
-		modelAndView.addObject(aadharNumber, userService.getUserModel().getAadharNumber());
-		modelAndView.addObject("age", userService.getUserModel().getAge());
-		modelAndView.setViewName(editUserPage);
+		modelAndView.setViewName("Home");
+		if (userService.getUserModel() != null) {
+			modelAndView.addObject(username, userService.getUserModel().getUsername());
+			modelAndView.addObject(aadharNumber, userService.getUserModel().getAadharNumber());
+			modelAndView.addObject("age", userService.getUserModel().getAge());
+			modelAndView.setViewName(editUserPage);
+		}
 		return modelAndView;
 	}
 
@@ -72,22 +81,23 @@ public class ProfileController {
 	public ModelAndView updateAdminPage(@Valid @ModelAttribute("adminModel") AdminModel adminDto,
 			BindingResult result) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("adminName", adminService.getAdminModel().getAdminName());
-		AdminModel adminModel = new AdminModel();
-		adminModel.setAdminName(adminService.getAdminModel().getAdminName());
-		adminModel.setAdminPassword(adminDto.getAdminPassword());
-		if (result.getFieldErrorCount("adminPassword") == 0) {
-			if (adminDto.getAdminPassword().equals(adminService.getAdminModel().getAdminPassword())) {
-				modelAndView.addObject("msg", "Password same as previous one try entering new password");
+		AdminModel adminModel = adminService.getAdminModel();
+		if (result.getFieldErrorCount("adminPassword") == 0 && !adminDto.getAdminPassword().isBlank()) {
+			if (adminDto.getAdminPassword().equals(adminModel.getAdminPassword())) {
+				modelAndView.addObject("adminName", adminModel.getAdminName());
+				modelAndView.addObject("errmsg", "Password same as previous one try entering new password");
 				modelAndView.setViewName(editAdminPage);
 
 			} else {
+				modelAndView.addObject("adminName", adminModel.getAdminName());
+				adminModel.setAdminPassword(adminDto.getAdminPassword());
 				adminService.saveAdmin(adminModel);
 				modelAndView.addObject("msg", "Profile updated successfully");
 				modelAndView.setViewName(editAdminPage);
 			}
 		} else {
-			modelAndView.addObject("msg", "Enter valid details");
+			modelAndView.addObject("adminName", adminModel.getAdminName());
+			modelAndView.addObject("errmsg", "Please provide valid details");
 			modelAndView.setViewName(editAdminPage);
 		}
 		return modelAndView;
