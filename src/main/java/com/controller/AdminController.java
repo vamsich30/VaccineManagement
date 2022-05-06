@@ -58,6 +58,7 @@ public class AdminController {
 	@GetMapping("/centers")
 	public ModelAndView viewDosePage() {
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("adminLogin");
 		modelAndView.addObject("covaxinMap", vaccineService.getVaccineDetails("covaxin"));
 		modelAndView.addObject("covishieldMap", vaccineService.getVaccineDetails("covishield"));
 		modelAndView.setViewName("adminCenters");
