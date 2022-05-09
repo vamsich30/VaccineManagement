@@ -1,58 +1,80 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<!DOCTYPE html>
-<html>
+	pageEncoding="ISO-8859-1"%><!DOCTYPE html>
+<html lang="en">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title></title>
-<style type="text/css">
-.error {
-	color: red;
-	font-style: italic;
-	font-weight: bold;
-	font-size: 12px;
-}
-</style>
-<link rel="stylesheet" type="text/css" href="/css/adminstyles.css" />
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Admin Login</title>
+<!-- plugins:css -->
+<link rel="stylesheet" href="../../vendors/feather/feather.css">
+<link rel="stylesheet"
+	href="../../vendors/ti-icons/css/themify-icons.css">
+<link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+<!-- endinject -->
+<!-- Plugin css for this page -->
+<!-- End plugin css for this page -->
+<!-- inject:css -->
+<link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
+<!-- endinject -->
+<link rel="shortcut icon" href="../../images/favicon.png" />
 </head>
+
 <body>
-	<form action="/admin" method="post">
-		<h2>
-			<span class="entypo-login"><i class="fa fa-sign-in"></i></span> Login
-		</h2>
-		<button class="submit">
-			<span class="entypo-lock"><i class="fa fa-lock"></i></span>
-		</button>
-
-		<span class="entypo-user inputUserIcon"> <i class="fa fa-user"></i>
-		</span>
-		<input type="text" class="user" placeholder="Admin Name"
-			name="adminName" />
-		<span class="entypo-key inputPassIcon"> <i class="fa fa-key"></i>
-		</span>
-		<input type="password" class="pass" placeholder="Admin Password"
-			name="adminPassword" />
-
-		&emsp;&emsp;&emsp;
-		<span style="color: red;font-size: 16px;font-weight: bold;font-style: italic;">${errmsg}</span>
-
-	</form>
-
-	<h1>${msg}</h1>
-	<script type="text/javascript">
-		$(".user").focusin(function() {
-			$(".inputUserIcon").css("color", "#e74c3c");
-		}).focusout(function() {
-			$(".inputUserIcon").css("color", "white");
-		});
-
-		$(".pass").focusin(function() {
-			$(".inputPassIcon").css("color", "#e74c3c");
-		}).focusout(function() {
-			$(".inputPassIcon").css("color", "white");
-		});
-	</script>
+	<div class="container-scroller">
+		<div class="container-fluid page-body-wrapper full-page-wrapper">
+			<div class="content-wrapper d-flex align-items-center auth px-0">
+				<div class="row w-100 mx-0">
+					<div class="col-lg-4 mx-auto">
+						<div class="auth-form-light text-left py-5 px-4 px-sm-5">
+							<div class="brand-logo">
+								<img src="../../images/logo.svg" alt="logo">
+							</div>
+							<h4>Hello! let's get started</h4>
+							<h6 class="font-weight-light">Sign in to continue.</h6>
+							<form class="pt-3" action="/admin/login" method="post">
+								<div class="form-group">
+									<input type="text" class="form-control form-control-lg"
+										id="exampleInputEmail1" placeholder="AdminName"
+										name="adminName" required>
+								</div>
+								<div class="form-group">
+									<input type="password" class="form-control form-control-lg"
+										id="exampleInputPassword1" placeholder="Admin Password"
+										name="adminPassword" required>
+								</div>
+								<div class="mt-3">
+									<button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">SIGN IN</button>
+								</div>
+								<span style="color: red;font-size: 16px;font-weight: bold;font-style: italic;">${errmsg}</span>
+								<div class="text-center mt-4 font-weight-light">
+									Don't have an account? <a href="/admin/signup"
+										class="text-primary">Create</a>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- content-wrapper ends -->
+		</div>
+		<!-- page-body-wrapper ends -->
+	</div>
+	<!-- container-scroller -->
+	<!-- plugins:js -->
+	<script src="../../vendors/js/vendor.bundle.base.js"></script>
+	<!-- endinject -->
+	<!-- Plugin js for this page -->
+	<!-- End plugin js for this page -->
+	<!-- inject:js -->
+	<script src="../../js/off-canvas.js"></script>
+	<script src="../../js/hoverable-collapse.js"></script>
+	<script src="../../js/template.js"></script>
+	<script src="../../js/settings.js"></script>
+	<script src="../../js/todolist.js"></script>
+	<!-- endinject -->
 </body>
+
 </html>

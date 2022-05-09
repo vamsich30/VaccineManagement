@@ -6,10 +6,13 @@ import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dto.UserModel;
 import com.entity.CovaxinEntity;
 import com.entity.CoviShieldEntity;
 import com.repos.CovaxinRepository;
 import com.repos.CoviShieldRepository;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 
 @Service
 public class VaccineService {
@@ -70,6 +73,14 @@ public class VaccineService {
 			entity.setVaccineCount(count);
 			covishield.save(entity);
 		}
+	}
+
+	public void sendConfirmationMessage(String doseNo, UserModel userModel) {
+		String msg = "\nHere are your Successful booking details for DOSE - " + doseNo + "\nVACCINE NAME :  "
+				+ userModel.getVaccineName() + "\nLocation :  " + userModel.getFirstDoseVaccineLocation() + "\nDate :  "
+				+ userModel.getFirstDoseDate();
+
+		Message.creator(new PhoneNumber("+91"+userModel.getMobileNumber()), new PhoneNumber("+19706018305"), msg).create();
 	}
 
 }

@@ -6,4 +6,5 @@ import com.entity.UserModelEntity;
 
 public interface UserRepo extends JpaRepository<UserModelEntity, String> {
 	UserModelEntity findByAadharNumber(String aadharNumber);
+	boolean existsByMobileNumber(String number);
 }

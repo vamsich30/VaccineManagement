@@ -1,5 +1,10 @@
 package com.controller;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,33 +44,60 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public ModelAndView register(@Valid @ModelAttribute("userModel") UserModel model, BindingResult result)
+			throws NoSuchAlgorithmException, InvalidKeySpecException
 
 	{
 		ModelAndView modelAndView = new ModelAndView();
-		if (result.getFieldErrorCount("username") != 0 && result.getFieldErrorCount("aadharNumber") != 0
-				&& result.getFieldErrorCount("password") != 0 && result.getFieldErrorCount("age") != 0) {
+		if (result.getFieldErrorCount("username") != 0 || result.getFieldErrorCount("aadharNumber") != 0
+				|| result.getFieldErrorCount("password") != 0 || result.getFieldErrorCount("age") != 0
+				|| result.getFieldErrorCount("mobileNumber") != 0) {
 
-			modelAndView.addObject("message", "Please enter valid data");
+			Map<String, Object> map = new HashMap<>();
+			map.put("username", model.getUsername());
+			map.put("aadharNumber", model.getAadharNumber());
+			map.put("age", model.getAge());
+			map.put("mobileNumber", model.getMobileNumber());
+			map.put("message", "Please enter valid details");
+			modelAndView.addAllObjects(map);
 			modelAndView.setViewName(signUpPage);
 
 		} else {
-			if (!service.checkAadharInDatabase(model.getAadharNumber())) {
-				service.saveUser(model);
-				modelAndView.addObject("successmessage", "Registration Successful");
-				modelAndView.setViewName("success");
-			} else {
-				modelAndView.addObject("username", model.getUsername());
-				modelAndView.addObject("password", model.getPassword());
-				modelAndView.addObject("age", model.getAge());
-				modelAndView.addObject("errormessage", "Aadhaar Number already Exists");
+
+			boolean phnRes = true;
+			boolean aadharRes = true;
+
+			if (service.checkMobileNumberInDatabase(model.getMobileNumber())) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("username", model.getUsername());
+				map.put("aadharNumber", model.getAadharNumber());
+				map.put("age", model.getAge());
+				map.put("mobileNumber", model.getMobileNumber());
+				map.put("phnmsg", "Mobile Number already Exists");
+				modelAndView.addAllObjects(map);
 				modelAndView.setViewName(signUpPage);
+				phnRes = false;
+			}
+			if (service.checkAadharInDatabase(model.getAadharNumber())) {
+				aadharRes = false;
+				Map<String, Object> map = new HashMap<>();
+				map.put("username", model.getUsername());
+				map.put("age", model.getAge());
+				map.put("mobileNumber", model.getMobileNumber());
+				modelAndView.addObject("errormessage", "Aadhaar Number already Exists");
+				modelAndView.addAllObjects(map);
+				modelAndView.setViewName(signUpPage);
+			}
+			if (phnRes && aadharRes) {
+				service.saveUser(model);
+				modelAndView.setViewName("loginmenu");
 			}
 		}
 		return modelAndView;
 	}
 
 	@PostMapping("/signin")
-	public ModelAndView checkLoginDetails(@Valid @ModelAttribute("userModel") UserModel model, BindingResult result) {
+	public ModelAndView checkLoginDetails(@Valid @ModelAttribute("userModel") UserModel model, BindingResult result)
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
 		ModelAndView modelAndView = new ModelAndView();
 
 		if (result.getFieldErrorCount("aadharNumber") == 0 && result.getFieldErrorCount("password") == 0) {

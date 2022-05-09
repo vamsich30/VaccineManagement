@@ -46,6 +46,9 @@ public class ProfileController {
 		modelAndView.setViewName("Home");
 		UserModel model = userService.getUserModel();
 		if (model != null) {
+			String str = model.getAadharNumber();
+			String aadhar = "XXXXXXXX" + str.substring(7, 11); 
+			modelAndView.addObject("aadharNumber",aadhar);
 			modelAndView.addObject("model", model);
 
 			modelAndView.setViewName("userProfile");

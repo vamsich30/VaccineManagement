@@ -82,6 +82,9 @@ public class FirstDoseController {
 			modelAndView.addObject("location", vaccineLocation);
 			modelAndView.addObject("msg", "Successfully Booked");
 			modelAndView.setViewName(firstDosePage);
+
+			vaccineService.sendConfirmationMessage("1", model);
+
 		} else {
 			modelAndView.addObject("vaccine", vaccineName);
 			modelAndView.addObject("date", firstDoseDate);

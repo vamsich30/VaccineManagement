@@ -27,6 +27,9 @@ public class UserModelEntity {
 
 	@Column(name = "age")
 	private int age;
+	
+	@Column(name="mobilenumber")
+	private String mobileNumber;
 
 	@Column(name = "userdose1status")
 	private boolean doseOne;

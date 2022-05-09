@@ -17,14 +17,21 @@ public class UserModel {
 	@NotBlank(message = "Aadhaar Number cannot be empty")
 	@Pattern(regexp = "[0-9]+", message = "Aadhaar number should contain only digits")
 	@Size(min = 12, max = 12, message = "Aadhar Number should be 12 digits")
+	@NotNull
 	String aadharNumber;
 
 	@NotBlank(message = "User Name cannot be empty")
 	@Pattern(regexp = "^[a-zA-Z_]+( [a-zA-Z_]+)*$", message = "UserName should contain only alphabets")
+	@NotNull()
 	String username;
 
 	@NotBlank(message = "Password cannot be blank")
+	@NotNull(message = "Password cannot be blank")
 	String password;
+	
+	@Size(max = 10,min=10,message = "Mobile Number should have 10 digits")
+	@NotNull(message = "Mobile Number cannot be empty")
+	String mobileNumber;
 
 	@NotNull(message = "Please enter your age")
 	Integer age;

@@ -1,11 +1,18 @@
 package com.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.converter.DAOConverter;
 import com.dto.AdminModel;
+import com.dto.UserModel;
 import com.entity.AdminEntity;
+import com.entity.UserModelEntity;
 import com.repos.AdminRepo;
 import com.repos.CovaxinRepository;
 import com.repos.CoviShieldRepository;
@@ -52,6 +59,24 @@ public class AdminService {
 
 	public long usersCount() {
 		return userRepo.count();
+	}
+
+	public boolean checkAdminExists(String adminName) {
+		return (adminRepo.existsById(adminName));
+	}
+
+	public List<UserModel> getUsers() {
+		Iterable<UserModelEntity> users = userRepo.findAll();
+		List<UserModelEntity> userList = new ArrayList<>();
+		users.forEach(userList::add);
+		return toDtoList(userList);
+	}
+
+	public List<UserModel> toDtoList(List<UserModelEntity> list) {
+		ModelMapper mapper = new ModelMapper();
+		return list.stream().map(userModelEntity -> mapper.map(userModelEntity, UserModel.class))
+				.collect(Collectors.toList());
+
 	}
 
 }

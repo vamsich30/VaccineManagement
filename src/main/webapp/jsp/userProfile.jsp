@@ -76,7 +76,7 @@
 									<div class="grid--50-50">
 										<label for="aadhar">Aadhaar Number</label>
 									</div>
-									<input type="text" value="${model.aadharNumber}" readonly />
+									<input type="text" value="${aadharNumber}" readonly />
 								</div>
 								<div class="field padding-bottom--24">
 									<label for="age">Age</label> <input type="text"
