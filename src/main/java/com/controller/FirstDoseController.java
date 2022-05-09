@@ -16,8 +16,11 @@ import com.service.LocationService;
 import com.service.UserService;
 import com.service.VaccineService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/dose")
+@Slf4j
 public class FirstDoseController {
 
 	@Autowired
@@ -83,7 +86,8 @@ public class FirstDoseController {
 			modelAndView.addObject("msg", "Successfully Booked");
 			modelAndView.setViewName(firstDosePage);
 
-			vaccineService.sendConfirmationMessage("1", model);
+//			vaccineService.sendConfirmationMessage("1", false,model);
+//			log.info("First Dose confirmation has been sent to :  +91" + model.getMobileNumber());
 
 		} else {
 			modelAndView.addObject("vaccine", vaccineName);
@@ -143,6 +147,10 @@ public class FirstDoseController {
 
 			modelAndView.addObject("updatemsg", "dose one details updated");
 			modelAndView.setViewName(updateFirstDosePage);
+
+//			log.info("First Dose confirmation has been sent to :  +91" + model.getMobileNumber());
+
+//			vaccineService.sendFirstDoseConfirmationMessage("1", true, model);
 
 		} else {
 			modelAndView.addObject("vaccine", vaccineName);

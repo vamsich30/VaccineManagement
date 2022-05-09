@@ -89,7 +89,7 @@ public class UserController {
 			}
 			if (phnRes && aadharRes) {
 				service.saveUser(model);
-				modelAndView.setViewName("loginmenu");
+				modelAndView.setViewName("login");
 			}
 		}
 		return modelAndView;

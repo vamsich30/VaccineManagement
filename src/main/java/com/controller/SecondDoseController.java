@@ -17,8 +17,11 @@ import com.service.LocationService;
 import com.service.UserService;
 import com.service.VaccineService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping("/dose")
+@Slf4j
 public class SecondDoseController {
 
 	@Autowired
@@ -109,6 +112,9 @@ public class SecondDoseController {
 
 				modelAndView.addObject("msg", "dose 2 booked successfully");
 				modelAndView.setViewName(secondDose);
+//				log.info("Second Dose Confirmation sent to : +91"+model.getMobileNumber());
+//				vaccineService.sendSecondDoseConfirmationMessage("2", false, model);
+
 			} else {
 				modelAndView.addObject("vaccineName", model.getVaccineName());
 				modelAndView.addObject("date", secondDoseDate);
@@ -159,6 +165,9 @@ public class SecondDoseController {
 						modelAndView.addObject("location", model.getSecondDoseVaccineLocation());
 						modelAndView.addObject("updatemsg", "dose 2 details updated");
 						modelAndView.setViewName(updateSecondDose);
+
+//						log.info("Second Dose Confirmation sent to : +91"+model.getMobileNumber());
+//						vaccineService.sendSecondDoseConfirmationMessage("2", true, model);
 					} else {
 						modelAndView.addObject("location", vaccineLocation);
 						modelAndView.addObject(errorMessage, "Gap between doses should be greater than 45 days");

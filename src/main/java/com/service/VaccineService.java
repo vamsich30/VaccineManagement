@@ -75,12 +75,30 @@ public class VaccineService {
 		}
 	}
 
-	public void sendConfirmationMessage(String doseNo, UserModel userModel) {
+	public void sendFirstDoseConfirmationMessage(String doseNo, boolean update, UserModel userModel) {
 		String msg = "\nHere are your Successful booking details for DOSE - " + doseNo + "\nVACCINE NAME :  "
 				+ userModel.getVaccineName() + "\nLocation :  " + userModel.getFirstDoseVaccineLocation() + "\nDate :  "
 				+ userModel.getFirstDoseDate();
+		if (update) {
+			msg = "\nYour Dose - " + doseNo + " booking is Successfully Updated\nDose Details\n" + "VACCINE NAME :  "
+					+ userModel.getVaccineName() + "\nLOCATION :  " + userModel.getFirstDoseVaccineLocation()
+					+ "\nDATE :  " + userModel.getFirstDoseDate();
+		}
+		Message.creator(new PhoneNumber("+91" + userModel.getMobileNumber()), new PhoneNumber("+19706018305"), msg)
+				.create();
+	}
 
-		Message.creator(new PhoneNumber("+91"+userModel.getMobileNumber()), new PhoneNumber("+19706018305"), msg).create();
+	public void sendSecondDoseConfirmationMessage(String doseNo, boolean update, UserModel userModel) {
+		String msg = "\nHere are your Successful booking details for DOSE - " + doseNo + "\nVACCINE NAME :  "
+				+ userModel.getVaccineName() + "\nLocation :  " + userModel.getSecondDoseVaccineLocation()
+				+ "\nDate :  " + userModel.getSecondDoseDate();
+		if (update) {
+			msg = "\nYour Dose - " + doseNo + " booking is Successfully Updated\nDose Details\n" + "VACCINE NAME :  "
+					+ userModel.getVaccineName() + "\nLOCATION :  " + userModel.getSecondDoseVaccineLocation()
+					+ "\nDATE :  " + userModel.getSecondDoseDate();
+		}
+		Message.creator(new PhoneNumber("+91" + userModel.getMobileNumber()), new PhoneNumber("+19706018305"), msg)
+				.create();
 	}
 
 }
