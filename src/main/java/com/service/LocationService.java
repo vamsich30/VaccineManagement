@@ -26,16 +26,6 @@ public class LocationService {
 	@Autowired
 	UserRepo userRepo;
 
-	public boolean checkDateValidation(String doseDate) {
-		boolean status = false;
-		try {
-			LocalDate.parse(doseDate, formatter);
-		} catch (Exception e) {
-			status = true;
-		}
-		return status;
-	}
-
 	public void updateFirstDoseDates(UserModel model) {
 		userRepo.save(DAOConverter.userDtoToEntity(model));
 	}
@@ -47,7 +37,7 @@ public class LocationService {
 
 	public String calculateSecondDoseDate(String date) {
 		LocalDate localDate = LocalDate.parse(date, formatter).plusDays(45);
-		return (formatter.format(localDate));
+		return formatter.format(localDate);
 	}
 
 	public boolean checkLocation(String location, int opt) {
